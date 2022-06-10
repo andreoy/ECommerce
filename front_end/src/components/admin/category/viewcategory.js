@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
+import swal from 'sweetalert';
 
 
 
@@ -19,6 +20,24 @@ function ViewCategory(){
 
     },[]);
 
+    const deleteCategory = (e, id) =>{
+        e.preventDefault();
+
+        const thisClicked = e.currentTarget;
+        thisClicked.innerText = "Deleting";
+
+        axios.delete(`/api/delete-category/${id}`).then(res=>{
+            if(res.data.status === 200){
+                swal("Success", res.data.message, "success");
+                thisClicked.closest("tr").remove();
+            }
+            else if (res.data.status === 404){
+                swal("Success", res.data.message, "success");
+                thisClicked.innerText = "Delete";
+            }
+        })
+    }
+
     var viewcategory_TABLEHTML = "";
 
     if(loading){
@@ -36,7 +55,7 @@ function ViewCategory(){
                         <td>
                             <Link to = {`/admin/edit-category`} state={{id:item.id}} className="btn btn-success btn-sm">Edit</Link>
                         </td>
-                        <td><button className="btn btn-danger btn-sm">Delete</button></td>
+                        <td><button type="button" onClick={(e) =>deleteCategory(e, item.id)} className="btn btn-danger btn-sm">Delete</button></td>
                     </tr>
                 )
             } )
