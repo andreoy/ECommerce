@@ -16,6 +16,15 @@ class CategoryController extends Controller
             'category'=>$category,
         ]);
     }
+
+    public function allcategory(){
+        $category = Category::where('status','0')->get();
+        return response()->json([
+            'status'=>200,
+            'category'=>$category,
+        ]);
+    }
+
     public function edit($id){
         $category = Category::find($id);
         if($category){
@@ -121,4 +130,6 @@ class CategoryController extends Controller
             ]);
         }
     }
+
+   
 }

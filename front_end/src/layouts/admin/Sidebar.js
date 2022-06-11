@@ -20,6 +20,19 @@ const SideNavbar = () =>{
                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                         View Category
                     </Link>
+
+                    <Link to="/" className="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
+                        <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
+                        Products
+                        <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+                    </Link>
+                    <div className="collapse" id="collapseProducts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav className="sb-sidenav-menu-nested nav">
+                            <Link to="/admin/add-product" className="nav-link" >Add Product</Link>
+                            <Link to="/admin/view-product" className="nav-link" >View Products</Link>
+                        </nav>
+                    </div>
+
                     <Link to="/admin/profile" className="nav-link" >
                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                         Profile
