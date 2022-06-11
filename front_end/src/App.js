@@ -12,6 +12,7 @@ import ViewCategory from "./components/admin/category/viewcategory";
 import EditCategory from "./components/admin/category/editcategory";
 import AddProduct from "./components/admin/product/addproduct.js";
 import ViewProduct from "./components/admin/product/viewproduct";
+import EditProduct from "./components/admin/product/editproduct";
 
 import axios from "axios";
 
@@ -48,6 +49,7 @@ function App() {
             <Route path="edit-category" name="editcategory" exact element={<EditCategory />}/>
             <Route path="add-product" name="addproduct" exact element={<AddProduct />}/>
             <Route path="view-product" name="viewproduct" exact element={<ViewProduct />}/>
+            <Route path="edit-product" name="editproduct" exact element={<EditProduct />}/>
             <Route path="/admin" element={<Navigate to="dashboard" replace />} />
           </Route>
         </Routes>  
