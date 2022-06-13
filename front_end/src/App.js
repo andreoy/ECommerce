@@ -15,6 +15,9 @@ import ViewProduct from "./components/admin/product/viewproduct";
 import EditProduct from "./components/admin/product/editproduct";
 
 import axios from "axios";
+import Contact from "./components/frontend/contact";
+import About from "./components/frontend/about";
+import PublicRoute from "./PublicRoute";
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers['Content-Type']='application/json';
@@ -32,7 +35,12 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />}/>
+          <Route path="/" element={<PublicRoute />}>
+            <Route index element={<Home />}/>
+            <Route path="about" name="about" exact element={<About/>} />
+            <Route path="contact" name="contact" exact element={<Contact/>}/>
+            <Route path="*" element={<Navigate to="" replace/>}/>
+          </Route>
           <Route exact path="/403" element={<Page403 />}/>
           <Route exact path="/404" element={<Page404 />}/>
           {/* <Route path="/login" element={<Login />}/>
@@ -50,9 +58,9 @@ function App() {
             <Route path="add-product" name="addproduct" exact element={<AddProduct />}/>
             <Route path="view-product" name="viewproduct" exact element={<ViewProduct />}/>
             <Route path="edit-product" name="editproduct" exact element={<EditProduct />}/>
-            <Route path="/admin" element={<Navigate to="dashboard" replace />} />
+            <Route path="*" element={<Navigate to="dashboard" replace />} />
           </Route>
-        </Routes>  
+        </Routes> 
     </BrowserRouter>
     </div>
   );

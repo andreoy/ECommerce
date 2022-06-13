@@ -1,12 +1,10 @@
 import React from 'react';
-import {Routes, Route, Navigate, Outlet} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 import '../../assets/admin/css/styles.css';
 import '../../assets/admin/js/scripts';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-
-import Dashboard from '../../components/admin/dashboard';
 
 const MasterLayout = () =>{
 
@@ -27,8 +25,4 @@ const MasterLayout = () =>{
         </div>
     )
 }
-
-<Routes>
-    <Route path="/admin" name="Admin" element={<Dashboard />}/>
-</Routes>
 export default MasterLayout;

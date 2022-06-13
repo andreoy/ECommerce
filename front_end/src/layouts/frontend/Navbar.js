@@ -56,6 +56,12 @@ function Navbar (){
                             <Link className="nav-link" to="/">Home <span className="sr-only"></span></Link>
                         </li>
                         <li className="nav-item">
+                            <Link className="nav-link" to="/about">About <span className="sr-only"></span></Link>
+                        </li>
+                        <li className="nav-item active">
+                            <Link className="nav-link" to="/contact">Contact <span className="sr-only"></span></Link>
+                        </li>
+                        <li className="nav-item">
                             <Link className="nav-link" to="/collection">Collection</Link>
                         </li>
                         {AuthButtons}
