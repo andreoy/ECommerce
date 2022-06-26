@@ -20,6 +20,7 @@ import About from "./components/frontend/about";
 import PublicRoute from "./PublicRoute";
 import ViewCategoryCollection from "./components/frontend/collections/viewcategorycollection";
 import ViewProductPub from "./components/frontend/collections/viewproductpub";
+import ProductDetail from "./components/frontend/collections/productdetail";
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers['Content-Type']='application/json';
@@ -43,6 +44,7 @@ function App() {
             <Route path="contact" name="contact" exact element={<Contact/>}/>
             <Route path="collections" name="viewcategorycollection" exact element={<ViewCategoryCollection/>}/>
             <Route path="collections/:slug" name="viewproductpub" element={<ViewProductPub />}/>
+            <Route path="collections/:category_slug/:product_slug" name="productdetail" element={<ProductDetail />}/>
             <Route exact path="/403" element={<Page403 />}/>
             <Route exact path="/404" element={<Page404 />}/>
             {/* <Route path="*" element={<Navigate to="" replace/>}/> */}
