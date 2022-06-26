@@ -8,13 +8,20 @@ function ViewCategoryCollection(){
     const[loading, setLoading] = useState(false);
     const[category, setCategory] = useState([]);
     useEffect(()=>{
+        let isMounted = true;
         axios.get(`/api/getCategory`).then(res=>{
-            if(res.data.status === 200){
-                console.log(res.data.category);
-                setCategory(res.data.category);
-                setLoading(false);
+
+            if(isMounted){
+                if(res.data.status === 200){
+                    // console.log(res.data.category);
+                    setCategory(res.data.category);
+                    setLoading(false);
+                }
             }
         });
+        return ()=>{
+            isMounted = false;
+        }
     },[]);
 
     if(loading){
@@ -30,7 +37,7 @@ function ViewCategoryCollection(){
                             <img src="" className="w-100" alt={item.name} />
                         </Link>
                         <div className="card-body">
-                                <Link to={`collections/${item.slug}`}>
+                                <Link to={`${item.slug}`}>
                                     <h5>{item.name}</h5>
                                 </Link>
                         </div>
