@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function ViewCategoryCollection(){
 
-    const[loading, setLoading] = useState(false);
+    const[loading, setLoading] = useState(true);
     const[category, setCategory] = useState([]);
     useEffect(()=>{
         let isMounted = true;
