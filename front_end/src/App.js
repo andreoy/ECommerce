@@ -18,6 +18,7 @@ import axios from "axios";
 import Contact from "./components/frontend/contact";
 import About from "./components/frontend/about";
 import PublicRoute from "./PublicRoute";
+import ViewCategoryCollection from "./components/frontend/collections/viewcategorycollection";
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers['Content-Type']='application/json';
@@ -39,10 +40,12 @@ function App() {
             <Route index element={<Home />}/>
             <Route path="about" name="about" exact element={<About/>} />
             <Route path="contact" name="contact" exact element={<Contact/>}/>
+            <Route path="collections" name="viewcategorycollection" exact element={<ViewCategoryCollection/>}/>
+            <Route exact path="/403" element={<Page403 />}/>
+          <Route exact path="/404" element={<Page404 />}/>
             <Route path="*" element={<Navigate to="" replace/>}/>
           </Route>
-          <Route exact path="/403" element={<Page403 />}/>
-          <Route exact path="/404" element={<Page404 />}/>
+         
           {/* <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register />}/> */}
 
