@@ -48,6 +48,28 @@ function ProductDetail(){
         }
     }
 
+
+    const submitAddtoCart = (e) =>{
+        e.preventDefault();
+
+        const data = {
+            product_id: product.id,
+            product_qty: quantity,
+        }
+
+        axios.post(`/api/add-to-cart`, data).then(res=>{
+            if(res.data.status === 201){
+                swal("Success", res.data.message, "success");
+            }else if(res.data.status === 409){
+                swal("Warning", res.data.message,"Warning");
+            }else if(res.data.status === 401){
+                swal("Error", res.data.message,"error");
+            }else if(res.data.status === 404){
+                swal("Warning", res.data.message,"Warning");
+            }
+        });
+    }
+
     if(loading)
     {
         return <h4>Loading Product Detail ...</h4>
@@ -68,7 +90,7 @@ function ProductDetail(){
                         </div>
                     </div>
                     <div className="col-md-3 mt-3">
-                        <button type="button" className="btn btn-primary w-100">Add to Chart</button>
+                        <button type="button" className="btn btn-primary w-100" onClick={submitAddtoCart}>Add to Chart</button>
                     </div>
                 </div>
             </div>
