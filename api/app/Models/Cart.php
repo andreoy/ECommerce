@@ -15,4 +15,11 @@ class Cart extends Model
         'product_qty',
 
     ];
+
+    protected $with = ['product'];
+
+    public function product()
+    {
+        return $this->belongsTO(Product::class,'product_id','id');
+    }
 }

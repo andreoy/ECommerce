@@ -14,6 +14,10 @@ Route::get('getCategory',[FrontendController::class,'category']);
 Route::get('fetchproducts/{slug}',[FrontendController::class, 'product']);
 Route::get('view-product-detail/{category_slug}/{product_slug}',[FrontendController::class, 'viewproduct']);
 Route::post('add-to-cart',[CartController::class,'addtocart']);
+Route::get('cart', [CartController::class,'viewcart']);
+Route::put('cartupdatequantity/{cart_id}/{scope}', [CartController::class,'updatequantity']);
+Route::delete('delete-cartitem/{cart_id}',[CartController::class,'deletecartitem']);
+
 
 Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
 

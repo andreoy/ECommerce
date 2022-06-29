@@ -21,6 +21,7 @@ import PublicRoute from "./PublicRoute";
 import ViewCategoryCollection from "./components/frontend/collections/viewcategorycollection";
 import ViewProductPub from "./components/frontend/collections/viewproductpub";
 import ProductDetail from "./components/frontend/collections/productdetail";
+import Cart from "./components/frontend/cart";
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers['Content-Type']='application/json';
@@ -31,7 +32,6 @@ axios.interceptors.request.use(function(config){
   config.headers.Authorization = token ?`Bearer ${token}`:``;
   return config;
 });
-
 
 function App() {
   return (
@@ -45,6 +45,7 @@ function App() {
             <Route path="collections" name="viewcategorycollection" exact element={<ViewCategoryCollection/>}/>
             <Route path="collections/:slug" name="viewproductpub" element={<ViewProductPub />}/>
             <Route path="collections/:category_slug/:product_slug" name="productdetail" element={<ProductDetail />}/>
+            <Route path="cart" name="cart" element={<Cart />}/>
             <Route exact path="/403" element={<Page403 />}/>
             <Route exact path="/404" element={<Page404 />}/>
             {/* <Route path="*" element={<Navigate to="" replace/>}/> */}
