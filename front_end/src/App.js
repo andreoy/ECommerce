@@ -13,6 +13,8 @@ import EditCategory from "./components/admin/category/editcategory";
 import AddProduct from "./components/admin/product/addproduct.js";
 import ViewProduct from "./components/admin/product/viewproduct";
 import EditProduct from "./components/admin/product/editproduct";
+import Orders from "./components/admin/order/orders";
+import ViewOrder from "./components/admin/order/vieworder";
 
 import axios from "axios";
 import Contact from "./components/frontend/contact";
@@ -68,6 +70,8 @@ function App() {
             <Route path="add-product" name="addproduct" exact element={<AddProduct />}/>
             <Route path="view-product" name="viewproduct" exact element={<ViewProduct />}/>
             <Route path="edit-product" name="editproduct" exact element={<EditProduct />}/>
+            <Route path="orders" name="orders" exact element={<Orders />}/>
+            <Route path="view-order" name="order" exact element={<ViewOrder />}/>
             <Route path="*" element={<Navigate to="dashboard" replace />} />
           </Route>
         </Routes> 

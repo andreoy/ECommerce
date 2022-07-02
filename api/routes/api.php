@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CheckoutController;
@@ -34,6 +35,9 @@ Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
     Route::delete('delete-category/{id}',[CategoryController::class,'destroy']);
     Route::get('all-category', [CategoryController::class,'allcategory']);
     
+    // Orders
+    Route::get('admin/orders',[OrderController::class,'index']);
+    Route::get('admin/order/{id}',[OrderController::class,'order']);
     // Products
     Route::post('store-product',[ProductController::class,'store']);
     Route::get('view-product',[ProductController::class,'index']);

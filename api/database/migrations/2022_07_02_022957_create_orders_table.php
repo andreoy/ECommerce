@@ -29,6 +29,7 @@ class CreateOrdersTable extends Migration
             $table->string('tracking_no');
             $table->integer('status')->default('0');
             $table->integer('remark');
+            $table->string('shipping_fee')->nullable();
             $table->timestamps();
         });
     }

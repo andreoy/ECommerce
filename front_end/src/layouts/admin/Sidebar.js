@@ -33,6 +33,11 @@ const SideNavbar = () =>{
                         </nav>
                     </div>
 
+                    <Link to="/admin/orders" className="nav-link" >
+                        <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
+                        Orders
+                    </Link>
+
                     <Link to="/admin/profile" className="nav-link" >
                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                         Profile
