@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\CheckoutController;
 use App\Http\Controllers\API\FrontendController;
 
 Route::post('register', [AuthController::class,'register']);
@@ -18,6 +19,7 @@ Route::get('cart', [CartController::class,'viewcart']);
 Route::put('cartupdatequantity/{cart_id}/{scope}', [CartController::class,'updatequantity']);
 Route::delete('delete-cartitem/{cart_id}',[CartController::class,'deletecartitem']);
 
+Route::post('place-order', [CheckoutController::class, 'placeorder']);
 
 Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
 
