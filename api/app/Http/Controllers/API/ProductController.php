@@ -30,6 +30,8 @@ class ProductController extends Controller
             'original_price'=>'required|max:20',
             'qty'=>'required|max:4',
             'image'=>'required|image|mimes:jpeg,png,jpg|max:2048',
+            'berat'=>'required|max:4',
+            
         ]);
 
         if($validator->fails())
@@ -66,6 +68,8 @@ class ProductController extends Controller
             $product->featured = $request->input('featured') == true ? '1':'0';
             $product->popular = $request->input('popular') == true ? '1':'0';
             $product->status = $request->input('status') == true ? '1':'0';
+
+            $product->berat = $request->input('berat');
 
             $product->save();
 
@@ -104,6 +108,7 @@ class ProductController extends Controller
             'selling_price'=>'required|max:20',
             'original_price'=>'required|max:20',
             'qty'=>'required|max:4',
+            'berat'=>'required|max:20',
         ]);
 
         if($validator->fails())
@@ -148,6 +153,7 @@ class ProductController extends Controller
                 $product->featured = $request->input('featured');
                 $product->popular = $request->input('popular');
                 $product->status = $request->input('status');
+                $product->berat = $request->input('berat');
 
                 $product->update();
 

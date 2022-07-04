@@ -14,7 +14,6 @@ class CheckoutController extends Controller
     {
         if(auth('sanctum')->check())
         {
-
             $validator = Validator::make($request->all(),[
                 'firstname'=>'required|max:191',
                 'lastname'=>'required|max:191',
@@ -23,7 +22,6 @@ class CheckoutController extends Controller
                 'address'=>'required|max:191',
                 'city'=>'required|max:191',
                 'state'=>'required|max:191',
-                'zipcode'=>'required|max:191',
             ]);
 
             if($validator->fails())
@@ -35,7 +33,6 @@ class CheckoutController extends Controller
             }
             else
             {
-               
                 $user_id = auth('sanctum')->user()->id;
                 $order = new Order;
                 $order->user_id = $user_id;
@@ -46,10 +43,10 @@ class CheckoutController extends Controller
                 $order->address = $request->address;
                 $order->city = $request->city;
                 $order->state = $request->state;
-                $order->zipcode = $request->zipcode;
 
-                $order->payment_mode = "C00";
+                $order->payment_mode = "C0D";
                 $order->tracking_no = "baby".rand(1111,9999);
+                $order->shipping_fee = $request->shipping_fee;
                 $order->save();
                 
                 $cart = Cart::where('user_id', $user_id)->get();
@@ -85,6 +82,5 @@ class CheckoutController extends Controller
                 'message'=>'Login to Continue',
             ]);
         }
-
     }
 }

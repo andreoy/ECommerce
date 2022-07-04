@@ -19,7 +19,8 @@ class OrderController extends Controller
 
     public function order($id)
     {
-        $order = Order::find($id)->with('orderitems')->get()->first();
+        $order = Order::where('id', $id)->with('orderitems')->get()->first();
+
         if($order){
             return response()->json([
                 'status'=>200,

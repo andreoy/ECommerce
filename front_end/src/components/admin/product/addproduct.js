@@ -23,6 +23,7 @@ function AddProduct()
         featured:'',
         popular:'',
         status:'',
+        berat:'',
     });
 
     const [picture, setPicture] = useState([]);
@@ -68,6 +69,7 @@ function AddProduct()
         formData.append('featured', productInput.featured);
         formData.append('popular', productInput.popular);
         formData.append('status', productInput.status);
+        formData.append('berat', productInput.berat);
 
         axios.post(`/api/store-product`, formData).then(res=>{
             if(res.data.status === 200){
@@ -89,6 +91,7 @@ function AddProduct()
                     featured:'',
                     popular:'',
                     status:'',
+                    berat:'',
                 });
                 setError([]);
             }
@@ -195,10 +198,15 @@ function AddProduct()
                                         <input type="text" name="brand" onChange={handleInput} value={productInput.brand} className="form-control" />
                                         <small className="text-danger">{errorlist.brand}</small>
                                     </div>
-                                    <div className="col-md-8 form-group mb-3">
+                                    <div className="col-md-4 form-group mb-3">
                                         <label>Image</label>
                                         <input type="file" name="image" onChange={handleImage} className="form-control" />
                                         <small className="text-danger">{errorlist.image}</small>
+                                    </div>
+                                    <div className="col-md-4 form-group mb-3">
+                                        <label>Berat</label>
+                                        <input type="text" name="berat" onChange={handleInput} value={productInput.berat} className="form-control" />
+                                        <small className="text-danger">{errorlist.berat}</small>
                                     </div>
                                     <div className="col-md-4 form-group mb-3">
                                         <label>Featured (checked=shown)</label>

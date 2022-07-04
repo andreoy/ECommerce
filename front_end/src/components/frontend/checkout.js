@@ -15,9 +15,11 @@ function Checkout()
 
     const [loading, setLoading] = useState(true);
     const [cart, setCart] =useState([]);
-    const [provinsi, getProvinsi] = useState([]);
+    const [listprovinsi, setProvinsi] = useState([]);
+    const [listkota, setKota] = useState([]);
 
     var totalCartPrice = 0;
+    var totalBerat = 0;
 
     const[checkoutInput, setCheckoutInput]=useState({
         firstname: '',
@@ -27,12 +29,16 @@ function Checkout()
         address: '',
         city: '',
         state: '',
-        zipcode: '',
+        kurir:'jne',
+
     });
 
     const [error, setError] = useState([]);
 
+    const [shipingfee, setShipingfee]=useState();
+
     useEffect(()=>{
+
         let isMounted = true;
 
         axios.get(`/api/cart`).then(res=>{
@@ -51,9 +57,9 @@ function Checkout()
             }
         });
 
-        axios.get(`	https://api.rajaongkir.com/starter/province`,{ headers : {'key': 'c88d05b014cff1d1e82a02f25879e906'}}).then(res=>{
-            if(res.data.code === 200){
-                console.log(res.data);
+        axios.get(`/api/get-provinsi`).then(res=>{
+            if(res.data.status ===200){
+                setProvinsi(res.data.provinsi.rajaongkir.results);
             }
         });
 
@@ -61,15 +67,37 @@ function Checkout()
             isMounted = false;
         }
     },[]);
+    
 
     const handleInput = (e) => {
         e.persist();
         setCheckoutInput({...checkoutInput,[e.target.name]:e.target.value});
     }
 
+    const handleProvinsi = (e) => {
+        e.persist();
+
+        axios.get(`/api/get-kota/${e.target.value}`).then(res=>{
+            if(res.data.status === 200){
+                setKota(res.data.kota.rajaongkir.results);
+            }
+        });
+        setCheckoutInput({...checkoutInput,[e.target.name]:e.target.value});
+    }
+
+    const handleKota = (e)=>{
+        e.persist();
+
+        axios.get(`/api/shiping-fee/${e.target.value}/${totalBerat}/${checkoutInput.kurir}`).then(res=>{
+            if(res.data.status === 200){
+                setShipingfee(res.data.kota.rajaongkir.results[0].costs[0].cost[0].value);
+            }
+        });
+        setCheckoutInput({...checkoutInput,[e.target.name]:e.target.value});
+    }
+
     const submitOrder = (e) => {
         e.preventDefault();
-
         const data = {
             firstname: checkoutInput.firstname,
             lastname: checkoutInput.lastname,
@@ -78,7 +106,7 @@ function Checkout()
             address: checkoutInput.address,
             city: checkoutInput.city,
             state: checkoutInput.state,
-            zipcode: checkoutInput.zipcode,
+            shipping_fee: shipingfee,
         }
 
         axios.post(`/api/place-order`, data).then(res=>{
@@ -93,8 +121,6 @@ function Checkout()
                 setError(res.data.errors);
             }
         });
-
-       ;
     }
 
     if(loading){
@@ -105,9 +131,7 @@ function Checkout()
 
     if(cart.length > 0){
         checkout_HTML = <div>
-
-                    <div className="row">
-
+                <div className="row">
                     <div className="col-md-7">
                         <div className="card">
                             <div className="card-header">
@@ -151,24 +175,43 @@ function Checkout()
                                         </div>
                                     </div>
                                     <div className="col-md-4">
+                                        <label>Provinsi</label>
+                                        <select name="city" onChange={handleProvinsi} value={checkoutInput.city} className="form-control">
+                                            <option>Pilih Provinsi</option>
+                                            {
+                                                listprovinsi.map((item)=>{
+                                                    return(
+                                                        <option value={item.province_id} key={item.province_id}>{item.province}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                        <small className="text-danger">{error.city}</small>
+                                    </div>
+                                    <div className="col-md-4">
                                         <div className="form-group mb-3">
-                                            <label>City</label>
-                                            <input type="text" name="city" onChange={handleInput} value={checkoutInput.city} className="form-control" />
-                                            <small className="text-danger">{error.city}</small>
+                                            <label>Kota</label>
+                                            <select name="state" onChange={handleKota} value={checkoutInput.state} className="form-control">
+                                            <option>Pilih Kota</option>
+                                            {
+                                                listkota.map((item)=>{
+                                                    return(
+                                                        <option value={item.city_id} key={item.city_id}>{item.city_name}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                        <small className="text-danger">{error.state}</small>
                                         </div>
                                     </div>
                                     <div className="col-md-4">
                                         <div className="form-group mb-3">
-                                            <label>State</label>
-                                            <input type="text" name="state" onChange={handleInput} value={checkoutInput.state} className="form-control" />
-                                            <small className="text-danger">{error.state}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="form-group mb-3">
-                                            <label>Zip Code</label>
-                                            <input type="text" name="zipcode" onChange={handleInput} value={checkoutInput.zipcode} className="form-control" />
-                                            <small className="text-danger">{error.zipcode}</small>
+                                            <label>Kurir</label>
+                                            <select name="kurir" onChange={handleInput} value={checkoutInput.kurir} className="form-control">
+                                                <option>Pilih Kurir</option> 
+                                                <option value='jne' >JNE</option>
+                                        </select>
+                                        <small className="text-danger">{error.state}</small>
                                         </div>
                                     </div>
                                     <div className="col-md-12">
@@ -179,9 +222,7 @@ function Checkout()
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                     <div className="col-md-5">
                         <table className="table table-bordered">
                             <thead>
@@ -195,6 +236,7 @@ function Checkout()
                             <tbody>
                                 {cart.map((item)=>{
                                     totalCartPrice += item.product.selling_price * item.product_qty;
+                                    totalBerat += item.product.berat * item.product_qty;
                                     return (
                                         <tr key={item.id}>
                                             <td>{item.product.name}</td>
@@ -204,11 +246,20 @@ function Checkout()
                                     </tr>
                                     )
                                 })}
-
+                              
                                 <tr>
                                     <td colSpan="2" className="text-end bold">Grand Total</td>
                                     <td colSpan="2" className="text-end bold">{totalCartPrice}</td>
                                 </tr>
+                                <tr>
+                                    <td colSpan="2" className="text-end bold">Biaya Kirim  {totalBerat} gram</td>
+                                    <td colSpan="2" className="text-end bold">{shipingfee}</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan="2" className="text-end bold">Total Bayar</td>
+                                    <td colSpan="2" className="text-end bold">{shipingfee+totalCartPrice}</td>
+                                </tr>
+
                             </tbody>
                             
                         </table>
@@ -236,7 +287,6 @@ function Checkout()
             </div>
         </div>
     )
-
 }
 
 export default Checkout;

@@ -23,6 +23,7 @@ function EditProduct()
         original_price:'',
         qty:'',
         brand:'',
+        berat:'',
     });
 
     const [picture, setPicture] = useState([]);
@@ -89,6 +90,7 @@ function EditProduct()
         formData.append('featured', allcheckbox.featured ? '1':'0');
         formData.append('popular', allcheckbox.popular ? '1':'0');
         formData.append('status', allcheckbox.status ? '1':'0');
+        formData.append('berat', productInput.berat);
 
         axios.post(`/api/update-product/${id}`, formData).then(res=>{
             if(res.data.status === 200){
@@ -203,11 +205,16 @@ function EditProduct()
                                         <input type="text" name="brand" onChange={handleInput} value={productInput.brand} className="form-control" />
                                         <small className="text-danger">{errorlist.brand}</small>
                                     </div>
-                                    <div className="col-md-8 form-group mb-3">
+                                    <div className="col-md-4 form-group mb-3">
                                         <label>Image</label>
                                         <input type="file" name="image" onChange={handleImage} className="form-control" />
                                         <small className="text-danger">{errorlist.image}</small>
                                         <img src={`http://localhost:8000/${productInput.image}`} width="50px" alt={productInput.name}></img>
+                                    </div>
+                                    <div className="col-md-4 form-group mb-3">
+                                        <label>Berat</label>
+                                        <input type="text" name="berat" onChange={handleInput} value={productInput.berat} className="form-control" />
+                                        <small className="text-danger">{errorlist.berat}</small>
                                     </div>
                                     <div className="col-md-4 form-group mb-3">
                                         <label>Featured (checked=shown)</label>

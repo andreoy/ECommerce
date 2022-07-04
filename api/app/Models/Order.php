@@ -19,7 +19,6 @@ class Order extends Model
         'address',
         'city',
         'state',
-        'zipcode',
         'payment_id',
         'payment_mode',
         'tracking_no',

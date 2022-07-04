@@ -8,6 +8,7 @@ use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CheckoutController;
+use App\Http\Controllers\API\ExpedisiController;
 use App\Http\Controllers\API\FrontendController;
 
 Route::post('register', [AuthController::class,'register']);
@@ -21,6 +22,10 @@ Route::put('cartupdatequantity/{cart_id}/{scope}', [CartController::class,'updat
 Route::delete('delete-cartitem/{cart_id}',[CartController::class,'deletecartitem']);
 
 Route::post('place-order', [CheckoutController::class, 'placeorder']);
+
+Route::get('get-provinsi',[ExpedisiCOntroller::class,'getProvinsi']);
+Route::get('get-kota/{id_provinsi}',[ExpedisiCOntroller::class,'getKota']);
+Route::get('shiping-fee/{id_kota}/{berat}/{kurir}',[ExpedisiController::class,'getCost']);
 
 Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
 

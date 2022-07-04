@@ -23,7 +23,6 @@ class CreateOrdersTable extends Migration
             $table->string('address');
             $table->string('city');
             $table->string('state');
-            $table->string('zipcode');
             $table->string('payment_id')->nullable();
             $table->string('payment_mode');
             $table->string('tracking_no');

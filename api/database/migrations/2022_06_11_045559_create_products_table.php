@@ -30,6 +30,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('featured')->default('0')->nullable();
             $table->tinyInteger('popular')->default('0')->nullable();
             $table->tinyInteger('status')->default('0');
+            $table->string('berat')->default('0')->nullable();
             $table->timestamps();
         });
     }

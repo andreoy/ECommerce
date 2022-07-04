@@ -17,7 +17,6 @@ function ViewOrder(){
         axios.get(`/api/admin/order/${id}`).then(res=>{
             if(res.data.status === 200)
             {
-                console.log(res.data.order);
                 setOrder(res.data.order);
                 setCart(res.data.order.orderitems);
             }
