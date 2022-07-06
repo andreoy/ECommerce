@@ -33,4 +33,25 @@ class OrderController extends Controller
             ]);
         }
     }
+
+    public function complateOrder($id)
+    {
+        $order = Order::find($id);
+
+        if($order){
+
+            $order->status = '1';
+            $order->update();
+
+            return response()->json([
+                'status'=>200,
+                'message'=>"Order Completed",
+            ]);
+        }else{
+            return response()->json([
+                'status'=>404,
+                'message'=>"Order not FOund",
+            ]);
+        }
+    }
 }

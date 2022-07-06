@@ -24,7 +24,8 @@ class Order extends Model
         'tracking_no',
         'status',
         'remark',
-        'shipping_fee,'
+        'shipping_fee',
+        'bukti_bayar',
     ];
 
     public function orderitems(){

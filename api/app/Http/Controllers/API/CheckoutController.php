@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class CheckoutController extends Controller
 {
@@ -22,6 +23,7 @@ class CheckoutController extends Controller
                 'address'=>'required|max:191',
                 'city'=>'required|max:191',
                 'state'=>'required|max:191',
+                'bukti_bayar'=>'required|image|mimes:jpeg, png, jpg|max:2048',
             ]);
 
             if($validator->fails())
@@ -47,6 +49,15 @@ class CheckoutController extends Controller
                 $order->payment_mode = "C0D";
                 $order->tracking_no = "baby".rand(1111,9999);
                 $order->shipping_fee = $request->shipping_fee;
+
+                if($request->hasFile('bukti_bayar')){
+                    $file=$request->file('bukti_bayar');
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = time() .'.'.$extension;
+                    $file->move('uploads/bukti_bayar/',$filename);
+                    $order->bukti_bayar = 'uploads/bukti_bayar/'.$filename;
+                }
+        
                 $order->save();
                 
                 $cart = Cart::where('user_id', $user_id)->get();

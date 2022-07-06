@@ -96,20 +96,27 @@ function Checkout()
         setCheckoutInput({...checkoutInput,[e.target.name]:e.target.value});
     }
 
+    const [picture, setPicture] = useState([]);
+    const handleImage = (e)=>{
+        e.persist();
+        setPicture({bukti_bayar: e.target.files[0]});
+    }
+
     const submitOrder = (e) => {
         e.preventDefault();
-        const data = {
-            firstname: checkoutInput.firstname,
-            lastname: checkoutInput.lastname,
-            phone: checkoutInput.phone,
-            email: checkoutInput.email,
-            address: checkoutInput.address,
-            city: checkoutInput.city,
-            state: checkoutInput.state,
-            shipping_fee: shipingfee,
-        }
+        const formData = new FormData();
+        formData.append('firstname', checkoutInput.firstname);
+        formData.append('lastname',checkoutInput.lastname);
+        formData.append('phone',checkoutInput.phone);
+        formData.append('email',checkoutInput.email);
+        formData.append('address',checkoutInput.address);
+        formData.append('city',checkoutInput.city);
+        formData.append('state',checkoutInput.state);
+        formData.append('shipping_fee',shipingfee);
+        formData.append('bukti_bayar',picture.bukti_bayar);
+        
 
-        axios.post(`/api/place-order`, data).then(res=>{
+        axios.post(`/api/place-order`, formData).then(res=>{
             if(res.data.status === 200)
             {
                 swal("Order Placed Successfully", res.data.message, "success");
@@ -138,88 +145,99 @@ function Checkout()
                                 <h4>Basic Information</h4>
                             </div>
                             <div className="card-body">
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-3">
-                                            <label>First Name</label>
-                                            <input type="text" name="firstname" onChange={handleInput} value={checkoutInput.firstname} className="form-control" />
-                                            <small className="text-danger">{error.firstname}</small>
+                                <form onSubmit={submitOrder} encType="multipart/form-data">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group mb-3">
+                                                <label>First Name</label>
+                                                <input type="text" name="firstname" onChange={handleInput} value={checkoutInput.firstname} className="form-control" />
+                                                <small className="text-danger">{error.firstname}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group mb-3">
+                                                <label>Last Name</label>
+                                                <input type="text" name="lastname" onChange={handleInput} value={checkoutInput.lastname} className="form-control" />
+                                                <small className="text-danger">{error.lastname}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group mb-3">
+                                                <label>Phone</label>
+                                                <input type="text" name="phone" onChange={handleInput} value={checkoutInput.phone} className="form-control" />
+                                                <small className="text-danger">{error.phone}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group mb-3">
+                                                <label>Email Address</label>
+                                                <input type="text" name="email" onChange={handleInput} value={checkoutInput.email} className="form-control" />
+                                                <small className="text-danger">{error.email}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="form-group mb-3">
+                                                <label>Full Address</label>
+                                                <input type="text" name="address" onChange={handleInput} value={checkoutInput.address} className="form-control" />
+                                                <small className="text-danger">{error.address}</small>
+                                            </div>
+                                        </div>
+                                    
+                                        
+                                        <div className="col-md-4">
+                                            <label>Provinsi</label>
+                                            <select name="city" onChange={handleProvinsi} value={checkoutInput.city} className="form-control">
+                                                <option>Pilih Provinsi</option>
+                                                {
+                                                    listprovinsi.map((item)=>{
+                                                        return(
+                                                            <option value={item.province_id} key={item.province_id}>{item.province}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                            <small className="text-danger">{error.city}</small>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <div className="form-group mb-3">
+                                                <label>Kota</label>
+                                                <select name="state" onChange={handleKota} value={checkoutInput.state} className="form-control">
+                                                <option>Pilih Kota</option>
+                                                {
+                                                    listkota.map((item)=>{
+                                                        return(
+                                                            <option value={item.city_id} key={item.city_id}>{item.city_name}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                            <small className="text-danger">{error.state}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <div className="form-group mb-3">
+                                                <label>Kurir</label>
+                                                <select name="kurir" onChange={handleInput} value={checkoutInput.kurir} className="form-control">
+                                                    <option>Pilih Kurir</option> 
+                                                    <option value='jne' >JNE</option>
+                                            </select>
+                                            <small className="text-danger">{error.state}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="form-group mb-3">
+                                                <label>Struk Pembayaran</label>
+                                                <input type="file" name="bukti_bayar" onChange={handleImage}  className="form-control" />
+                                                <small className="text-danger">{error.bukti_bayar}</small>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="form-group text-end">
+                                                <button type="submit" className="btn btn-primary">Place Order</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-3">
-                                            <label>Last Name</label>
-                                            <input type="text" name="lastname" onChange={handleInput} value={checkoutInput.lastname} className="form-control" />
-                                            <small className="text-danger">{error.lastname}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-3">
-                                            <label>Phone</label>
-                                            <input type="text" name="phone" onChange={handleInput} value={checkoutInput.phone} className="form-control" />
-                                            <small className="text-danger">{error.phone}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="form-group mb-3">
-                                            <label>Email Address</label>
-                                            <input type="text" name="email" onChange={handleInput} value={checkoutInput.email} className="form-control" />
-                                            <small className="text-danger">{error.email}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="form-group mb-3">
-                                            <label>Full Address</label>
-                                            <input type="text" name="address" onChange={handleInput} value={checkoutInput.address} className="form-control" />
-                                            <small className="text-danger">{error.address}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <label>Provinsi</label>
-                                        <select name="city" onChange={handleProvinsi} value={checkoutInput.city} className="form-control">
-                                            <option>Pilih Provinsi</option>
-                                            {
-                                                listprovinsi.map((item)=>{
-                                                    return(
-                                                        <option value={item.province_id} key={item.province_id}>{item.province}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                        <small className="text-danger">{error.city}</small>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="form-group mb-3">
-                                            <label>Kota</label>
-                                            <select name="state" onChange={handleKota} value={checkoutInput.state} className="form-control">
-                                            <option>Pilih Kota</option>
-                                            {
-                                                listkota.map((item)=>{
-                                                    return(
-                                                        <option value={item.city_id} key={item.city_id}>{item.city_name}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                        <small className="text-danger">{error.state}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="form-group mb-3">
-                                            <label>Kurir</label>
-                                            <select name="kurir" onChange={handleInput} value={checkoutInput.kurir} className="form-control">
-                                                <option>Pilih Kurir</option> 
-                                                <option value='jne' >JNE</option>
-                                        </select>
-                                        <small className="text-danger">{error.state}</small>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="form-group text-end">
-                                            <button type="button" className="btn btn-primary" onClick={submitOrder}>Place Order</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

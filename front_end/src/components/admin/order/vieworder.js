@@ -12,6 +12,9 @@ function ViewOrder(){
     const [cart, setCart] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    var totalCartPrice = 0;
+    var totalBerat = 0;
+
     useEffect(()=>{
 
         axios.get(`/api/admin/order/${id}`).then(res=>{
@@ -30,12 +33,41 @@ function ViewOrder(){
 
     },[]);
 
+    const handleCompleted=(e)=>{
+
+        e.persist();
+        axios.put(`/api/admin/completedOrder/${id}`).then(res=>{
+            if(res.data.status === 200)
+            {
+                swal("SUccess", res.data.message,"success");
+                navigate('admin/orders',{replace:true});
+
+            }
+            else if(res.data.status === 404){
+                swal("Error", res.data.message);
+            }
+        });
+    }
+
     if(loading)
     {
         return <h4>Loading Order Information...</h4>
     }
 
     var order_html = '';
+    var display_Button = '';
+
+    if(order.status === 0){
+        display_Button = 
+            <div className="form-group text-end">
+                <button type="button" onClick={handleCompleted} className="btn btn-danger">Completed</button>
+            </div>
+    }else{
+        display_Button = 
+        <div className="form-group text-end">
+            <button type="button" disabled className="btn btn-dager">Completed</button>
+        </div>
+    }
 
     if(order){
         order_html = <div>
@@ -97,11 +129,16 @@ function ViewOrder(){
                                 <input type="text" name="zipcode" value={order.zipcode} disabled className="form-control" />
                             </div>
                         </div>
-                        <div className="col-md-12">
-                            <div className="form-group text-end">
-                                {/* <button type="button" className="btn btn-primary" onClick={submitComplete}>Completed</button> */}
-                            </div>
+                        <div className="col-md-4 border-end">
+                            <img src={`http://localhost:8000/${order.bukti_bayar}`} className="w-100" />
                         </div>
+                        <div className="col-md-12">
+                            {/* <div className="form-group text-end">
+                                <button type="button" onClick={handleCompleted} className="btn btn-danger">Completed</button>
+                            </div> */}
+                            {display_Button}
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -120,7 +157,8 @@ function ViewOrder(){
                 </thead>
                 <tbody>
                     {cart.map((item)=>{
-                        // totalCartPrice += item.product.selling_price * item.product_qty;
+                        totalCartPrice += item.price * item.qty;
+                        totalBerat += item.product.berat * item.product_qty;
                         return (
                             <tr key={item.id}>
                                 <td>{item.product.name}</td>
@@ -132,8 +170,16 @@ function ViewOrder(){
                     })}
 
                     <tr>
-                        {/* <td colSpan="2" className="text-end bold">Grand Total</td>
-                        <td colSpan="2" className="text-end bold">{totalCartPrice}</td> */}
+                        <td colSpan="2" className="text-end bold">Grand Total</td>
+                        <td colSpan="2" className="text-end bold">{totalCartPrice}</td>
+                    </tr>
+                    <tr>
+                        <td colSpan="2" className="text-end bold">Biaya Kirim</td>
+                        <td colSpan="2" className="text-end bold">{order.shipping_fee}</td>
+                    </tr>
+                    <tr>
+                        <td colSpan="2" className="text-end bold">Total Bayar</td>
+                        <td colSpan="2" className="text-end bold">{Number(order.shipping_fee) + totalCartPrice}</td>
                     </tr>
                 </tbody>
                 

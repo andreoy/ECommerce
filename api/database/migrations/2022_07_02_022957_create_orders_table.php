@@ -29,6 +29,7 @@ class CreateOrdersTable extends Migration
             $table->integer('status')->default('0');
             $table->integer('remark');
             $table->string('shipping_fee')->nullable();
+            $table->string('bukti_bayar')->nullable();
             $table->timestamps();
         });
     }
