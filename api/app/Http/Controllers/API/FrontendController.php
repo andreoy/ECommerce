@@ -17,6 +17,14 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function popular(){
+        $popular = Product::where('popular','1')->get();
+        return response()->json([
+            'status'=>200,
+            'popular'=>$popular,
+        ]);
+    }
+
     public function product($slug){
         $category = Category::where('slug', $slug)->where('status','0')->first();
         if($category){

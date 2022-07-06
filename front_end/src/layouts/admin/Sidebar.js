@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 const SideNavbar = () =>{
 
+    var user = localStorage.getItem('auth_name');
     return(
         <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div className="sb-sidenav-menu">
@@ -38,11 +39,18 @@ const SideNavbar = () =>{
                         Orders
                     </Link>
 
-                    <Link to="/admin/profile" className="nav-link" >
-                        <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
+                    <Link to="/" className="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseProfile" aria-expanded="false" aria-controls="collapseProfile">
+                        <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Profile
+                        <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
-                    <div className="sb-sidenav-menu-heading">Interface</div>
+                    <div className="collapse" id="collapseProfile" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav className="sb-sidenav-menu-nested nav">
+                            <Link to="/admin/about" className="nav-link" >About</Link>
+                            <Link to="/admin/contact" className="nav-link" >Contact</Link>
+                        </nav>
+                    </div>
+                    {/* <div className="sb-sidenav-menu-heading">Interface</div>
                     <Link to="/" className="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Layouts
@@ -58,8 +66,8 @@ const SideNavbar = () =>{
                         <div className="sb-nav-link-icon"><i className="fas fa-book-open"></i></div>
                         Pages
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
-                    </Link>
-                    <div className="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                    </Link> */}
+                    {/* <div className="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                         <nav className="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                             <Link to="/" className="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                 Authentication
@@ -84,8 +92,8 @@ const SideNavbar = () =>{
                                 </nav>
                             </div>
                         </nav>
-                    </div>
-                    <div className="sb-sidenav-menu-heading">Addons</div>
+                    </div> */}
+                    {/* <div className="sb-sidenav-menu-heading">Addons</div>
                     <Link to="/" className="nav-link" >
                         <div className="sb-nav-link-icon"><i className="fas fa-chart-area"></i></div>
                         Charts
@@ -93,12 +101,12 @@ const SideNavbar = () =>{
                     <Link  to="/" className="nav-link">
                         <div className="sb-nav-link-icon"><i className="fas fa-table"></i></div>
                         Tables
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
             <div className="sb-sidenav-footer">
             <div className="small">Logged in as:</div>
-                Start Bootstrap
+                {user}
             </div>
         </nav>
     );

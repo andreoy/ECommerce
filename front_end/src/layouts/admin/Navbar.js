@@ -1,7 +1,24 @@
+import axios from 'axios';
 import React from 'react';
 import {Link} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const Navbar = () =>{
+
+    const navigate = useNavigate();
+    const logoutSubmit =(e)=>{
+        e.preventDefault();
+
+        axios.post('/api/logout').then(res=>{
+            if(res.data.status === 200){
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('auth_name');
+                swal("Success", res.data.message,"success");
+                navigate('/');
+            }
+        });
+    }
 
     return(
         <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -10,7 +27,7 @@ const Navbar = () =>{
         
             <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i className="fas fa-bars"></i></button>
           
-            <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            {/* <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div className="input-group">
                     <input className="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                     <button className="btn btn-primary" id="btnNavbarSearch" type="button"><i className="fas fa-search"></i></button>
@@ -26,7 +43,14 @@ const Navbar = () =>{
                         <li><Link to="/" className="dropdown-item" >Logout</Link></li>
                     </ul>
                 </li>
-            </ul>
+            </ul> */}
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav ms-auto">
+                    <li className="nav-item">
+                        <button type="button" onClick={logoutSubmit} className='nav-link btn btn-danger btn-sm text-white'>Logout</button>
+                    </li>   
+                    </ul>
+                </div>
         </nav>
     );
 }

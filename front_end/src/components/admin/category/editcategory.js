@@ -12,6 +12,7 @@ function EditCategory(){
     const[loading, setLoading] = useState(true);
     const[error, setError] = useState([]);
     const[chkbx, setChkbx] = useState(false);
+    const [picture, setPicture] = useState([]);
     
     useEffect(()=>{
    
@@ -35,16 +36,31 @@ function EditCategory(){
         setCategory({...categoryInput, [e.target.name]: e.target.value});
     }
 
+    const handleImage = (e)=>{
+        e.persist();
+        setPicture({image: e.target.files[0]});
+    }
+
+
     const updateCategory = (e) => {
         e.preventDefault();
         const id_update = id;
-        const data = categoryInput;
+        const formData = new FormData();
+        formData.append('slug',categoryInput.slug);
+        formData.append('name',categoryInput.name);
+        formData.append('description',categoryInput.descrip);
+        formData.append('status',categoryInput.status);
+        formData.append('meta_title',categoryInput.meta_title);
+        formData.append('meta_keyword',categoryInput.meta_keyword);
+        formData.append('meta_descrip',categoryInput.meta_descrip);
+        formData.append('image', picture.image);
+
         if(document.getElementById('status').checked){
             categoryInput.status = 1;
         }else{
             categoryInput.status = 0;
         }
-        axios.put(`/api/edit-category/${id_update}`, data).then(res=>{
+        axios.post(`/api/edit-category/${id_update}`, formData).then(res=>{
             if(res.data.status === 200){
                 swal("Success", res.data.message,"success");
                 setError([]);
@@ -102,6 +118,11 @@ function EditCategory(){
                                     <label>Status</label>
                                     <input type="checkbox" id="status" name="status" defaultChecked={chkbx} onChange={handleInput} value={categoryInput.status} /> Status 0 = shown/1=hidden
                                 </div>
+                                <div className="form-group mb-3">
+                                        <label>Image</label>
+                                        <input type="file" name="image" onChange={handleImage} className="form-control" />
+                                        <img src={`http://localhost:8000/${categoryInput.image}`} width="50px" alt={categoryInput.name}></img>
+                                    </div>
                             </div>
                             <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="seo-tags-tab">
                                 

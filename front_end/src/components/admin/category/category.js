@@ -10,14 +10,23 @@ function Category(){
         name: '',
         descrip: '',
         status: '',
+        image:'',
         meta_title: '',
         meta_keyword: '',
         meta_descrip: '',
+
     });
+
+    const [picture, setPicture] = useState([]);
 
     const handleInput = (e)=>{
         e.persist();
         setCategory({...categoryInput, [e.target.name]: e.target.value})
+    }
+
+    const handleImage = (e)=>{
+        e.persist();
+        setPicture({image: e.target.files[0]});
     }
 
     const submitCategory = (e) =>{
@@ -40,7 +49,17 @@ function Category(){
             error_list:[],
         }
 
-        axios.post(`/api/store-category`, data).then(res =>{
+        const formData = new FormData();
+        formData.append('slug',categoryInput.slug);
+        formData.append('name',categoryInput.name);
+        formData.append('description',categoryInput.descrip);
+        formData.append('status',categoryInput.status);
+        formData.append('meta_title',categoryInput.meta_title);
+        formData.append('meta_keyword',categoryInput.meta_keyword);
+        formData.append('meta_descrip',categoryInput.meta_descrip);
+        formData.append('image', picture.image);
+
+        axios.post(`/api/store-category`, formData).then(res =>{
             if(res.data.status === 200){
                 swal("Success", res.data.message, "success");
                 document.getElementById('CATEGORY_FORM').reset();
@@ -100,6 +119,11 @@ function Category(){
                                         <label>Description</label>
                                         <textarea name="descrip" onChange={handleInput} value={categoryInput.descrip} className='form-control'> </textarea>
                                     </div>
+
+                                    <div className="form-group mb-3">
+                                        <label>Image</label>
+                                        <input type="file" name="image" onChange={handleImage} className="form-control" />
+                                    </div>
                                 
                                     <div className='form-group mb-3'>
                                         <label>Status</label>
@@ -122,6 +146,7 @@ function Category(){
                                         <label>Meta Description</label>
                                         <textarea name="meta_descrip" onChange={handleInput} value={categoryInput.meta_descrip} className='form-control'> </textarea>
                                     </div>
+
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-primary px-4 float-end">Submit</button>

@@ -14,6 +14,7 @@ use App\Http\Controllers\API\FrontendController;
 Route::post('register', [AuthController::class,'register']);
 Route::post('login', [AuthController::class,'login']);
 Route::get('getCategory',[FrontendController::class,'category']);
+Route::get('getPopular',[FrontendController::class,'popular']);
 Route::get('fetchproducts/{slug}',[FrontendController::class, 'product']);
 Route::get('view-product-detail/{category_slug}/{product_slug}',[FrontendController::class, 'viewproduct']);
 Route::post('add-to-cart',[CartController::class,'addtocart']);
@@ -36,7 +37,7 @@ Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
     Route::get('view-category', [CategoryController::class,'index']);    
     Route::post('store-category', [CategoryController::class,'store']);
     Route::get('edit-category/{id}',[CategoryController::class,'edit']);
-    Route::put('edit-category/{id}',[CategoryController::class,'update']);
+    Route::post('edit-category/{id}',[CategoryController::class,'update']);
     Route::delete('delete-category/{id}',[CategoryController::class,'destroy']);
     Route::get('all-category', [CategoryController::class,'allcategory']);
     
